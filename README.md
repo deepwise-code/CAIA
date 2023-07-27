@@ -43,17 +43,12 @@ python main.py --gpu 0 1 2 3  --train --config tasks/configs/aneurysm_seg.resune
 # eval
 python main.py --gpu 0 1 2 3  --test --config tasks/configs/aneurysm_seg.resunet_titanxp4.yaml --check_point /path/to/model
 
-python main.py --gpu 7 6 5 4  --test --config tasks/configs/aneurysm_seg.resunet_titanxp4.yaml --check_point  results/aneurysm_seg/train/resunet3d_adam_ce_dice_loss_from0_lr5e-4_ps_80x80x80_wlww_400_1200_titanxp4/model_latest.pth.tar
-
 # 2.densenet 3d train/eval
 # train
 python main.py --gpu 0 1 2 3  --train --config tasks/configs/aneurysm_cls.densenet_titanxp4.yaml
 
 # eval
 python main.py --gpu 0 1 2 3  --test --config tasks/configs/aneurysm_cls.densenet_titanxp4.yaml --check_point /path/to/model
-
-
-python main.py --gpu 7 6 5 4 --test --config tasks/configs/aneurysm_cls.densenet_titanxp4.yaml --check_point results/aneurysm_cls/train/densenet3d_adam_ce_focal_loss_from0_lr5e-3_crop_x3_titanxp4_test/model_latest.pth.tar
 
 ```
 The main parameters are as following:
