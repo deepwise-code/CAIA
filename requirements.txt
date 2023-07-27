@@ -1,0 +1,10 @@
+yacs==0.1.8
+nibabel==3.2.2
+scipy
+joblib
+opencv-python==4.6.0
+SimpleITK==2.0.2
+scikit-image
+scikit-learn
+numpy==1.22.3
+torch==1.8.2+cu102

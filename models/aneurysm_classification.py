@@ -42,12 +42,20 @@ class DenseNet(nn.Module):
     def __init__(self, in_channel, num_classes, growth_rate=32, block_layers=[6, 12, 24, 16]):
         super(DenseNet, self).__init__()
         self.block1 = nn.Sequential(
-            nn.Conv3d(in_channel, 64, 7, 2, 3),
-            nn.BatchNorm3d(64),
-            nn.ReLU(True),
-            nn.MaxPool3d(3, 2, padding=1)
+            nn.Conv3d(in_channel, out_channels=64, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm3d(num_features=64),
+            nn.ReLU(inplace=False),
+            nn.Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm3d(num_features=64),
+            nn.ReLU(inplace=False),
+            nn.MaxPool3d(kernel_size=2, stride=2)
         )
-
+        # self.block1 = nn.Sequential(
+        #     nn.Conv3d(in_channel, out_channels=64, kernel_size=7, stride=2, padding=3),
+        #     nn.BatchNorm3d(num_features=64),
+        #     nn.ReLU(inplace=True),
+        #     nn.MaxPool3d(kernel_size=3, stride=2, padding=1)
+        # )
         self.DB1 = self._make_dense_block(64, growth_rate, num=block_layers[0])
         self.TL1 = self._make_transition_layer(256)
         self.DB2 = self._make_dense_block(128, growth_rate, num=block_layers[1])
@@ -63,6 +71,8 @@ class DenseNet(nn.Module):
         )
 
         self.classifier = nn.Linear(512, num_classes)
+
+        self.__init_params__()
 
     def forward(self, x):
         x = self.block1(x)
@@ -85,7 +95,17 @@ class DenseNet(nn.Module):
 
         return nn.Sequential(*block)
 
-    def _make_transition_layer(self,channels):
+    def _make_transition_layer(self, channels):
         block = []
         block.append(transition(channels, channels // 2))
         return nn.Sequential(*block)
+
+    def __init_params__(self):
+        for m in self.modules():
+            if isinstance(m, (nn.Conv3d, nn.Linear)):
+                nn.init.kaiming_normal_(m.weight)
+                if m.bias is not None:
+                    nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.BatchNorm3d):
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias, 0)

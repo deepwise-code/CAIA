@@ -1,0 +1,71 @@
+
+#TASK
+TASK:
+    TYPE: 0
+    NAME: "aneurysm_cls"
+
+SEED: 1234
+METRICS: ['Acc', 'PR', 'NR',]
+METRIC_EXTEND: 'extend-aneurysm'
+
+#MODEL
+MODEL:
+    NAME: "densenet"
+    DIM: "3d"
+    BN: "bn"
+    INPUT_CHANNEL: 1
+    NCLASS: 2
+    BACKBONE:
+        ARCH: ""
+        HEAD: ""
+
+#SOLVER
+SOLVER:
+  OPTIMIZER:
+    TYPE: "adam"
+    BETAS: (0.9, 0.99)
+    WEIGHT_DECAY: 0.0001
+  BASE_LR: 0.0005
+  LR_MODE: "poly"
+  LR_STEPS: [30, 60, 90]
+  EPOCHS: 100
+
+
+#LOSS
+LOSS:
+  TYPE: "ML:ce_loss+bce_focal_loss"
+  WEIGHT: [1.0, 1.0]
+  # TYPE: 'ce_loss'
+  # WEIGHT: [1.0]
+  CLASS_WEIGHT: [1.0, 1.00]
+  IGNORE_INDEX: -100
+
+#TRAIN
+TRAIN:
+  RESUME: False
+  PRINT: 50 #100
+  START_VALIDATE: 1 #6
+  VALIDATE_FREQUENCE: 1
+  DATA:
+    WORKERS: 8 #16
+    BATCH_SIZE: 96 #32
+    SAMPLER_TYPE: 'ct' #'default'  #
+    NUM_PER_CT: 32  # CTSampler, 每个ct/series采样样本数
+    POSITIVE_SAMPLE_FRACTION: 0.5 # CTSampler, 每个ct/series采样样本中阴阳性采样比例
+    TRAIN_IMAGE_DIR: './raws/demo_dataset/aneurysm_ds_cls/shape_norm'
+    TRAIN_LIST: "./raws/demo_dataset/aneurysm_ds_cls/part_train.txt"
+    VALID_IMAGE_DIR: './raws/demo_dataset/aneurysm_ds_cls/shape_norm'
+    VAL_LIST: "./raws/demo_dataset/aneurysm_ds_cls/part_valid.txt"
+
+
+#TEST
+TEST:
+  MODEL_PTH: ''
+  DATA:
+    # WORKERS: 8 #16
+    # BATCH_SIZE: 32
+    TEST_IMAGE_DIR: './raws/demo_dataset/aneurysm_ds_cls/shape_norm'
+    TEST_LIST: "./raws/demo_dataset/aneurysm_ds_cls/part_test.txt"
+
+OUTPUT_DIR: "densenet3d_adam_ce_focal_loss_from0_lr5e-3_crop_x3_titanxp4_test"
+SAVE_ALL: True #False, save all train model weight/epoch
