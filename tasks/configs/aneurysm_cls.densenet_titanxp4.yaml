@@ -48,14 +48,14 @@ TRAIN:
   VALIDATE_FREQUENCE: 1
   DATA:
     WORKERS: 8 #16
-    BATCH_SIZE: 96 #32
+    BATCH_SIZE: 128 #32*4
     SAMPLER_TYPE: 'ct' #'default'  #
     NUM_PER_CT: 32  # CTSampler, 每个ct/series采样样本数
     POSITIVE_SAMPLE_FRACTION: 0.5 # CTSampler, 每个ct/series采样样本中阴阳性采样比例
-    TRAIN_IMAGE_DIR: './raws/demo_dataset/aneurysm_ds_cls/shape_norm'
-    TRAIN_LIST: "./raws/demo_dataset/aneurysm_ds_cls/part_train.txt"
-    VALID_IMAGE_DIR: './raws/demo_dataset/aneurysm_ds_cls/shape_norm'
-    VAL_LIST: "./raws/demo_dataset/aneurysm_ds_cls/part_valid.txt"
+    TRAIN_IMAGE_DIR: './raws/demo_dataset/aneurysm_ds_cls/P0.3_wwwl_800_300_lesion_match_s3s36/shape_norm/train'
+    TRAIN_LIST: "./raws/demo_dataset/aneurysm_ds_cls/P0.3_wwwl_800_300_lesion_match_s3s36/part_train.txt"
+    VALID_IMAGE_DIR: './raws/demo_dataset/aneurysm_ds_cls/P0.3_wwwl_800_300_lesion_match_s3s36/shape_norm/valid'
+    VAL_LIST: "./raws/demo_dataset/aneurysm_ds_cls/P0.3_wwwl_800_300_lesion_match_s3s36/part_valid.txt"
 
 
 #TEST
@@ -64,8 +64,8 @@ TEST:
   DATA:
     # WORKERS: 8 #16
     # BATCH_SIZE: 32
-    TEST_IMAGE_DIR: './raws/demo_dataset/aneurysm_ds_cls/shape_norm'
-    TEST_LIST: "./raws/demo_dataset/aneurysm_ds_cls/part_test.txt"
+    TEST_IMAGE_DIR: './raws/demo_dataset/aneurysm_ds_cls/P0.3_wwwl_800_300_lesion_match_s3s36/shape_norm/test'
+    TEST_LIST: "./raws/demo_dataset/aneurysm_ds_cls/P0.3_wwwl_800_300_lesion_match_s3s36/part_test.txt"
 
-OUTPUT_DIR: "densenet3d_adam_ce_focal_loss_from0_lr5e-3_crop_x3_titanxp4_test"
+OUTPUT_DIR: "densenet3d_adam_ce_focal_loss_from0_lr5e-4_crop_x3_titanxp4_test"
 SAVE_ALL: True #False, save all train model weight/epoch
